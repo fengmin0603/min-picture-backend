@@ -36,6 +36,9 @@ public class FileController {
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @PostMapping("/test/upload")
     public BaseResponse<String> testUploadFile(@RequestPart("file") MultipartFile multipartFile) {
+        System.out.println("========== 收到上传请求 ==========");
+        System.out.println("文件名: " + multipartFile.getOriginalFilename());
+        System.out.println("===================================");
         // 文件目录
         String filename = multipartFile.getOriginalFilename();
         String filepath = String.format("/test/%s", filename);
@@ -49,6 +52,7 @@ public class FileController {
             return ResultUtils.success(filepath);
         } catch (Exception e) {
             log.error("file upload error, filepath = " + filepath, e);
+            log.error("上传失败的错误：",e);
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传失败");
         } finally {
             if (file != null) {

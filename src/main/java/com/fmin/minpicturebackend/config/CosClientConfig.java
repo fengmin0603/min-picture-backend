@@ -52,6 +52,8 @@ public class CosClientConfig {
         // 这里建议设置使用 https 协议
         // 从 5.6.54 版本开始，默认使用了 https
         clientConfig.setHttpProtocol(HttpProtocol.https);
+        clientConfig.setConnectionTimeout(30000);
+        clientConfig.setSocketTimeout(60000);
         // 3 生成 cos 客户端。
         return new COSClient(cred, clientConfig);
     }

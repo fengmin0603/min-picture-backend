@@ -8,6 +8,8 @@ import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.model.ciModel.persistence.PicOperations;
 import com.fmin.minpicturebackend.config.CosClientConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -18,6 +20,7 @@ import java.util.List;
 @Component
 public class CosManager {
 
+    private static final Logger log = LoggerFactory.getLogger(CosManager.class);
     @Resource
     private CosClientConfig cosClientConfig;
 
@@ -31,6 +34,17 @@ public class CosManager {
      * @param file 文件
      */
     public PutObjectResult putObject(String key, File file) {
+        String bucket = cosClientConfig.getBucket();
+        String region = cosClientConfig.getRegion(); // 新增
+        System.out.println("========== 调试信息 ==========");
+        System.out.println("bucket: " + bucket);
+        System.out.println("region: " + region);
+        System.out.println("secretId: " + cosClientConfig.getSecretId());
+        System.out.println("secretKey是否为空: " + (cosClientConfig.getSecretKey() != null ? "已配置" : "null"));
+        System.out.println("key: " + key);
+        System.out.println("file: " + file);
+        System.out.println("file路径: " + (file != null ? file.getAbsolutePath() : "null"));
+        System.out.println("===============================");
         PutObjectRequest putObjectRequest = new PutObjectRequest(cosClientConfig.getBucket(), key,
                 file);
         return cosClient.putObject(putObjectRequest);
